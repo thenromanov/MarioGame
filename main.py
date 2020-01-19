@@ -2,6 +2,8 @@ import pygame
 import os
 import sys
 
+fileName = input()
+
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, type, x, y, *groups):
@@ -36,10 +38,14 @@ def loadImage(name, colorkey=None):
 
 def loadLevel(name):
     filename = 'data/' + name
-    with open(filename) as mapFile:
-        levelMap = [line.strip() for line in mapFile]
-        maxWidth = max(map(len, levelMap))
-        return list(map(lambda x: x.ljust(maxWidth, '.'), levelMap))
+    if os.path.isfile(filename):
+        with open(filename) as mapFile:
+            levelMap = [line.strip() for line in mapFile]
+            maxWidth = max(map(len, levelMap))
+            return list(map(lambda x: x.ljust(maxWidth, '.'), levelMap))
+    else:
+        print('File not exists')
+        terminate()
 
 
 def terminate():
@@ -108,7 +114,7 @@ images = {
     'empty': loadImage('grass.png')
 }
 
-player, x, y = generateLevel(loadLevel('level1.txt'))
+player, x, y = generateLevel(loadLevel(fileName))
 
 startScreen()
 run = True
