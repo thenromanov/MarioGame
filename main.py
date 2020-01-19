@@ -2,7 +2,7 @@ import pygame
 import os
 import sys
 
-fileName = input()
+fileName = input('Enter file name: ')
 
 
 class Tile(pygame.sprite.Sprite):
