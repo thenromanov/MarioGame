@@ -2,8 +2,6 @@ import pygame
 import os
 import sys
 
-fileName = input('Enter file name: ')
-
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, type, x, y, *groups):
@@ -22,6 +20,20 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.rect.move(dx, dy)
         if pygame.sprite.spritecollideany(self, walls):
             self.rect = self.rect.move(-dx, -dy)
+
+
+class Camera:
+    def __init__(self):
+        self.dx = 0
+        self.dy = 0
+
+    def apply(self, obj):
+        obj.rect.x += self.dx
+        obj.rect.y += self.dy
+
+    def update(self, target):
+        self.dx = -(target.rect.x + target.rect.w // 2 - screenSize[0] // 2)
+        self.dy = -(target.rect.y + target.rect.h // 2 - screenSize[1] // 2)
 
 
 def loadImage(name, colorkey=None):
@@ -114,7 +126,8 @@ images = {
     'empty': loadImage('grass.png')
 }
 
-player, x, y = generateLevel(loadLevel(fileName))
+player, x, y = generateLevel(loadLevel('level1.txt'))
+camera = Camera()
 
 startScreen()
 run = True
@@ -131,6 +144,10 @@ while run:
         player.transfer(-10, 0)
     if keys[pygame.K_DOWN]:
         player.transfer(0, 10)
+    camera.update(player)
+    for sprite in sprites:
+        camera.apply(sprite)
+    camera.apply(player)
     sprites.draw(screen)
     players.draw(screen)
     pygame.display.flip()
