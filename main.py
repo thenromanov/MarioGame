@@ -70,7 +70,7 @@ def startScreen():
             "Правила игры",
             "Если в правилах несколько строк,",
             "приходится выводить их построчно"]
-    bg = pygame.transform.scale(loadImage('bg.jpg'), screenSize)
+    bg = pygame.transform.scale(loadImage('bg.jpeg'), screenSize)
     screen.blit(bg, (0, 0))
     font = pygame.font.Font(None, 30)
     textCoord = 50
